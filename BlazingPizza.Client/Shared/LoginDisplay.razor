@@ -1,0 +1,31 @@
+﻿@using System.Security.Claims;
+@using static OpenIddict.Abstractions.OpenIddictConstants;
+@inject NavigationManager Navigation
+
+<div class="user-info">
+    <AuthorizeView>
+        <Authorizing>
+            <text>...</text>
+        </Authorizing>
+        <Authorized>
+            <img src="img/user.svg" />
+            <div>
+                <a href="authentication/profile" class="username">@context?.User?.FindFirst(c=>c.Type == Claims.Name)?.Value</a>
+                <form method="get" action="logout">
+                    <button class="btn btn-link sign-out">Sign out</button>
+                </form>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <a class="sign-in" href="authentication/register">Register</a>
+            <a class="sign-in" href="login?redirectUri=/">Log in</a>
+        </NotAuthorized>
+    </AuthorizeView>
+</div>
+
+@code {
+    void BeginSignOut()
+    {
+        Navigation.NavigateTo("/");
+    }
+}

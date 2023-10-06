@@ -1,0 +1,21 @@
+﻿@page "/"
+@namespace BlazingPizza.Client.Pages
+@using BlazingPizza.Client.Data;
+@using Microsoft.AspNetCore.Authentication
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+
+@{
+    var tokens = new InitialApplicationState
+            {
+                AccessToken = await HttpContext.GetTokenAsync("access_token"),
+                RefreshToken = await HttpContext.GetTokenAsync("refresh_token"),
+                XsrfToken = Xsrf.GetAndStoreTokens(HttpContext).RequestToken
+            };
+}
+
+<component type="typeof(App)" render-mode="ServerPrerendered" init param-InitialState="tokens" />
